@@ -1,1 +1,109 @@
+package vector3d;
+
+public class Vector3D {
+    private double x, y, z;
+
+    public Vector3D() {
+        this.x = this.y = this.z = 0;
+    }
+
+    public Vector3D(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public double getX() { return x; }
+    public double getY() { return y; }
+    public double getZ() { return z; }
+
+    public Vector3D suma(Vector3D v) {
+        return new Vector3D(this.x + v.x, this.y + v.y, this.z + v.z);
+    }
+
+    // Multiplicación por escalar
+    public Vector3D multiplicarPorEscalar(double r) {
+        return new Vector3D(r * this.x, r * this.y, r * this.z);
+    }
+
+    // Longitud del vector
+    public double longitud() {
+        return Math.sqrt(x * x + y * y + z * z);
+    }
+
+    // Normalizar
+    public Vector3D normalizar() {
+        double length = longitud();
+        if (length == 0) {
+            throw new ArithmeticException("Vector nulo no puede ser normalizado");
+        }
+        return new Vector3D(x / length, y / length, z / length);
+    }
+
+    // Producto escalar
+    public double productoEscalar(Vector3D v) {
+        return this.x * v.x + this.y * v.y + this.z * v.z;
+    }
+
+    // Producto vectorial
+    public Vector3D productoVectorial(Vector3D v) {
+        double i = this.y * v.z - this.z * v.y;
+        double j = this.z * v.x - this.x * v.z;
+        double k = this.x * v.y - this.y * v.x;
+        return new Vector3D(i, j, k);
+    }
+
+    // Verificar ortogonalidad
+    public boolean esOrtogonal(Vector3D v) {
+        return Math.abs(this.productoEscalar(v)) < 1e-10; // tolerancia
+    }
+
+    // ToString
+    @Override
+    public String toString() {
+        return String.format("(%.2f, %.2f, %.2f)", x, y, z);
+    }
+}
+
+++++++++++++++++++++++
+
+package vector3d;
+
+public class TestVector3D {
+    public static void main(String[] args) {
+        Vector3D a = new Vector3D(1, 2, 3);
+        Vector3D b = new Vector3D(4, 5, 6);
+
+        System.out.println("Vector a: " + a);
+        System.out.println("Vector b: " + b);
+
+        // Suma
+        Vector3D c = a.suma(b);
+        System.out.println("a + b = " + c);
+
+        // Producto escalar
+        double dot = a.productoEscalar(b);
+        System.out.println("a · b = " + dot);
+
+        // Producto vectorial
+        Vector3D cross = a.productoVectorial(b);
+        System.out.println("a x b = " + cross);
+
+        // Longitud
+        System.out.println("|a| = " + a.longitud());
+        System.out.println("|b| = " + b.longitud());
+
+        // Normalización
+        System.out.println("a normalizado: " + a.normalizar());
+        System.out.println("b normalizado: " + b.normalizar());
+
+        // Verificación de ortogonalidad
+        Vector3D u = new Vector3D(1, 0, 0);
+        Vector3D v = new Vector3D(0, 1, 0);
+        System.out.println("u y v son ortogonales? " + u.esOrtogonal(v));
+    }
+}
+
+
+
 
